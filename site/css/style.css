@@ -999,6 +999,18 @@ img[data-broken] { display: none; }
 /* ===== Travel Diaries ===== */
 .travel-section { background: var(--cream); padding-block: clamp(3rem, 6vw, 5rem); }
 
+.travel-story {
+  max-width: 720px;
+  margin: 1.6rem auto 0;
+  text-align: left;
+}
+.travel-story p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #4a443d;
+}
+.travel-story p + p { margin-top: 1.1rem; }
+
 .travel-grid {
   margin-top: 2.6rem;
   display: grid;
