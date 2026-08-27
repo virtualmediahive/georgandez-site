@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initLeadModal();
   initTestimonialSlider();
   initTravelLightbox();
+  initTravelVideoAutoplay();
   initScrollRail();
   initNewsletterForm();
   initImageFallbacks();
@@ -107,22 +108,43 @@ function pathIcon(id) {
   return icons[id] || "";
 }
 
+function travelMediaMarkup(t) {
+  if (t.video) return `<video class="travel-video" src="${t.video}" muted loop playsinline preload="metadata"></video>`;
+  if (t.photo) return `<img src="${t.photo}" alt="${t.location}">`;
+  return `<span class="placeholder">${t.location}</span>`;
+}
+
 function renderTravelDiaries() {
   const root = document.getElementById("travel-grid");
   if (!root || !window.SITE_DATA) return;
   root.innerHTML = window.SITE_DATA.travelDiaries
     .map(
       (t, i) => `
-      <button type="button" class="travel-card" data-index="${i}" aria-label="View photo: ${t.location}">
-        ${
-          t.photo
-            ? `<img src="${t.photo}" alt="${t.location}">`
-            : `<span class="placeholder">${t.location}</span>`
-        }
+      <button type="button" class="travel-card" data-index="${i}" aria-label="View: ${t.location}">
+        ${travelMediaMarkup(t)}
         <span class="caption">${t.location}</span>
       </button>`
     )
     .join("");
+}
+
+function initTravelVideoAutoplay() {
+  const videos = document.querySelectorAll(".travel-card .travel-video");
+  if (!videos.length) return;
+  if (!("IntersectionObserver" in window)) {
+    videos.forEach((v) => v.play().catch(() => {}));
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.play().catch(() => {});
+        else entry.target.pause();
+      });
+    },
+    { threshold: 0.5 }
+  );
+  videos.forEach((v) => observer.observe(v));
 }
 
 function initTravelLightbox() {
@@ -142,7 +164,9 @@ function initTravelLightbox() {
   const show = (i) => {
     index = (i + entries.length) % entries.length;
     const t = entries[index];
-    media.innerHTML = t.photo
+    media.innerHTML = t.video
+      ? `<video src="${t.video}" controls autoplay muted loop playsinline></video>`
+      : t.photo
       ? `<img src="${t.photo}" alt="${t.location}">`
       : `<span class="placeholder">${t.location}</span>`;
     locationEl.textContent = t.location;
@@ -159,6 +183,8 @@ function initTravelLightbox() {
   const close = () => {
     overlay.classList.remove("is-open");
     document.body.style.overflow = "";
+    const vid = media.querySelector("video");
+    if (vid) vid.pause();
     lastTrigger?.focus();
   };
 

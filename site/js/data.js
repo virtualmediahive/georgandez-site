@@ -127,8 +127,8 @@ window.SITE_DATA = {
      Replace `location`, `caption` and `photo` with real, verified details before
      this section goes live. Do not invent specific cities/countries. */
   travelDiaries: [
-    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
-    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Surfed 4ft waves in Morocco", caption: "A clip from a work-and-travel stop in Morocco.", video: "videos/travel-morocco.mp4", photo: null },
+    { location: "Danced with dolphins in Jamaica", caption: "A clip from Ocho Rios, Jamaica.", video: "videos/travel-jamaica.mp4", photo: null },
     { location: "Location Pending", caption: "Photo and story pending.", photo: null },
     { location: "Location Pending", caption: "Photo and story pending.", photo: null },
     { location: "Location Pending", caption: "Photo and story pending.", photo: null },
