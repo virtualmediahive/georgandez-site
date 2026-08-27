@@ -57,7 +57,7 @@
 </div>
 
 <section class="hero" id="hero" tabindex="-1">
-  <img class="hero-bg-img" src="images/hero-cafe.jpg" alt="Georgandez Morrison working on a laptop at a café" data-fallback-text="Hero photo: save as images/hero-cafe.jpg">
+  <img class="hero-bg-img" src="images/hero-office.jpg" alt="Georgandez Morrison working on a laptop at his desk, surfboard in the background" data-fallback-text="Hero photo: save as images/hero-office.jpg">
   <div class="hero-overlay"></div>
   <div class="hero-vignette"></div>
   <div class="hero-inner-wrap">
@@ -81,7 +81,7 @@
   </div>
 </section>
 
-<section>
+<section id="help-you">
   <div class="container split">
     <div class="split-media">
       <img src="images/hero-cafe.jpg" alt="Georgandez Morrison working remotely" data-fallback-text="Photo: save as images/hero-cafe.jpg">
@@ -101,7 +101,7 @@
   </div>
 </section>
 
-<section class="help-section">
+<section class="help-section" id="services">
   <div class="container">
     <div class="section-divider reveal">
       <span>How I Can Help You</span>
@@ -154,6 +154,30 @@
     <p class="stats-footnote">*Figures marked with a dash are placeholders pending verified numbers.</p>
   </div>
 </section>
+
+<section class="travel-section" id="travel">
+  <div class="container">
+    <div class="text-center reveal" style="max-width:640px; margin-inline:auto;">
+      <span class="eyebrow">Travel Diaries</span>
+      <h2 class="section-heading">My Travel Diary</h2>
+      <p class="section-sub">Snapshots from the places I&rsquo;ve worked and traveled while building a location-free business.</p>
+    </div>
+    <div class="travel-grid reveal" id="travel-grid"></div>
+  </div>
+</section>
+
+<div class="travel-lightbox" id="travel-lightbox">
+  <div class="travel-lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="travel-lightbox-location">
+    <button class="travel-lightbox-close" aria-label="Close">&times;</button>
+    <button class="travel-lightbox-prev" aria-label="Previous photo">&#8592;</button>
+    <button class="travel-lightbox-next" aria-label="Next photo">&#8594;</button>
+    <div class="travel-lightbox-media" id="travel-lightbox-media"></div>
+    <div class="travel-lightbox-info">
+      <span class="location" id="travel-lightbox-location"></span>
+      <p id="travel-lightbox-caption"></p>
+    </div>
+  </div>
+</div>
 
 <section class="lead-section" id="lead-magnet">
   <div class="container split split--reverse">

@@ -110,5 +110,28 @@ window.SITE_DATA = {
     { name: "BIA" },
     { name: "Event Pros" },
     { name: "pull up & pitch" }
+  ],
+
+  /* Powers the left scroll rail + bottom section pill nav. `id` must match a real
+     section id in index.html. `sub` is the short line shown under the section name. */
+  scrollNav: [
+    { id: "hero", label: "Home", sub: "Start Here" },
+    { id: "help-you", label: "I Help You", sub: "Build Your Business" },
+    { id: "services", label: "How I Help", sub: "Guide · Courses · Coaching" },
+    { id: "story", label: "My Story", sub: "Jamaica to $12K/Month" },
+    { id: "travel", label: "Travel Diaries", sub: "Work From Anywhere" },
+    { id: "lead-magnet", label: "Get The Guide", sub: "Free Starter Guide" }
+  ],
+
+  /* TRAVEL DIARIES PLACEHOLDER — no real travel photos or locations confirmed yet.
+     Replace `location`, `caption` and `photo` with real, verified details before
+     this section goes live. Do not invent specific cities/countries. */
+  travelDiaries: [
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Location Pending", caption: "Photo and story pending.", photo: null }
   ]
 };

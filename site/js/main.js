@@ -6,9 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   renderStats();
   renderProducts();
   renderPaths();
+  renderTravelDiaries();
   initReveal();
   initLeadModal();
   initTestimonialSlider();
+  initTravelLightbox();
+  initScrollRail();
   initNewsletterForm();
   initImageFallbacks();
 });
@@ -102,6 +105,168 @@ function pathIcon(id) {
     lifestyle: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>'
   };
   return icons[id] || "";
+}
+
+function renderTravelDiaries() {
+  const root = document.getElementById("travel-grid");
+  if (!root || !window.SITE_DATA) return;
+  root.innerHTML = window.SITE_DATA.travelDiaries
+    .map(
+      (t, i) => `
+      <button type="button" class="travel-card" data-index="${i}" aria-label="View photo: ${t.location}">
+        ${
+          t.photo
+            ? `<img src="${t.photo}" alt="${t.location}">`
+            : `<span class="placeholder">${t.location}</span>`
+        }
+        <span class="caption">${t.location}</span>
+      </button>`
+    )
+    .join("");
+}
+
+function initTravelLightbox() {
+  const overlay = document.getElementById("travel-lightbox");
+  const grid = document.getElementById("travel-grid");
+  if (!overlay || !grid || !window.SITE_DATA) return;
+  const entries = window.SITE_DATA.travelDiaries;
+  const media = document.getElementById("travel-lightbox-media");
+  const locationEl = document.getElementById("travel-lightbox-location");
+  const captionEl = document.getElementById("travel-lightbox-caption");
+  const closeBtn = overlay.querySelector(".travel-lightbox-close");
+  const prevBtn = overlay.querySelector(".travel-lightbox-prev");
+  const nextBtn = overlay.querySelector(".travel-lightbox-next");
+  let index = 0;
+  let lastTrigger = null;
+
+  const show = (i) => {
+    index = (i + entries.length) % entries.length;
+    const t = entries[index];
+    media.innerHTML = t.photo
+      ? `<img src="${t.photo}" alt="${t.location}">`
+      : `<span class="placeholder">${t.location}</span>`;
+    locationEl.textContent = t.location;
+    captionEl.textContent = t.caption;
+  };
+
+  const open = (i, triggerEl) => {
+    lastTrigger = triggerEl || document.activeElement;
+    show(i);
+    overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  };
+  const close = () => {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  };
+
+  grid.querySelectorAll(".travel-card").forEach((card) => {
+    card.addEventListener("click", () => open(Number(card.getAttribute("data-index")), card));
+  });
+  closeBtn.addEventListener("click", close);
+  prevBtn.addEventListener("click", () => show(index - 1));
+  nextBtn.addEventListener("click", () => show(index + 1));
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  document.addEventListener("keydown", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") show(index - 1);
+    if (e.key === "ArrowRight") show(index + 1);
+  });
+}
+
+function initScrollRail() {
+  const navConfig = (window.SITE_DATA && window.SITE_DATA.scrollNav) || [];
+  const sections = navConfig
+    .map((s) => ({ ...s, el: document.getElementById(s.id) }))
+    .filter((s) => s.el);
+  if (!sections.length) return;
+
+  const rail = document.createElement("div");
+  rail.className = "scroll-rail";
+  rail.setAttribute("aria-hidden", "true");
+  rail.innerHTML =
+    '<div class="scroll-rail-track"></div>' +
+    '<div class="scroll-rail-fill"></div>' +
+    '<div class="scroll-rail-marker"></div>' +
+    '<div class="scroll-rail-label"><span class="name"></span><span class="sub"></span></div>';
+  document.body.appendChild(rail);
+
+  const pill = document.createElement("nav");
+  pill.className = "section-pillnav";
+  pill.setAttribute("aria-label", "Jump to section");
+  pill.innerHTML = sections
+    .map((s) => `<button type="button" data-target="${s.id}"><span class="dot"></span>${s.label}</button>`)
+    .join("");
+  document.body.appendChild(pill);
+
+  const fill = rail.querySelector(".scroll-rail-fill");
+  const marker = rail.querySelector(".scroll-rail-marker");
+  const label = rail.querySelector(".scroll-rail-label");
+  const labelName = label.querySelector(".name");
+  const labelSub = label.querySelector(".sub");
+  const pillButtons = pill.querySelectorAll("button");
+
+  pillButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.getAttribute("data-target"));
+      target && target.scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  let current = null;
+  const setActive = (section) => {
+    if (current === section) return;
+    current = section;
+    labelName.textContent = section.label;
+    labelSub.textContent = section.sub || "";
+    pillButtons.forEach((btn) => {
+      btn.classList.toggle("is-active", btn.getAttribute("data-target") === section.id);
+    });
+  };
+  setActive(sections[0]);
+  label.classList.add("is-visible");
+
+  if ("IntersectionObserver" in window) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const match = sections.find((s) => s.el === entry.target);
+            if (match) setActive(match);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => spy.observe(s.el));
+  }
+
+  let footerVisible = false;
+  const footer = document.querySelector(".site-footer");
+  if (footer && "IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => { footerVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(footer);
+  }
+
+  const heroSection = sections[0];
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+    fill.style.height = pct + "%";
+    marker.style.top = pct + "%";
+    label.style.top = pct + "%";
+    const onHero = current === heroSection;
+    const hideRail = footerVisible || onHero;
+    rail.style.opacity = hideRail ? "0" : "1";
+    rail.style.pointerEvents = hideRail ? "none" : "auto";
+    pill.style.opacity = footerVisible ? "0" : "1";
+    pill.style.pointerEvents = footerVisible ? "none" : "auto";
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
 }
 
 function initHeaderScroll() {
