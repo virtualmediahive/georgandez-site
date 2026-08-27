@@ -131,7 +131,7 @@ window.SITE_DATA = {
     { location: "Danced with dolphins in Jamaica", caption: "A clip from Ocho Rios, Jamaica.", video: "videos/travel-jamaica.mp4", photo: null },
     { location: "Family adventure thru Comuna 13, Colombia", caption: "A clip from Comuna 13, Colombia.", video: "videos/travel-colombia.mp4", photo: null },
     { location: "Feeding Giraffes", caption: "A clip from feeding giraffes on the road.", video: "videos/travel-giraffes.mp4", photo: null },
-    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
-    { location: "Location Pending", caption: "Photo and story pending.", photo: null }
+    { location: "Climbed 700 Steps Up El Peñón de Guatapé", caption: "With my wife at El Peñón de Guatapé, Colombia.", photo: "images/travel-guatape.jpg" },
+    { location: "Balloon Ride in Marrakesh, Morocco", caption: "A hot air balloon ride over Marrakesh, Morocco with family.", photo: "images/travel-marrakesh.jpg" }
   ]
 };
