@@ -130,7 +130,7 @@ window.SITE_DATA = {
     { location: "Surfed 4ft waves in Morocco", caption: "A clip from a work-and-travel stop in Morocco.", video: "videos/travel-morocco.mp4", photo: null },
     { location: "Danced with dolphins in Jamaica", caption: "A clip from Ocho Rios, Jamaica.", video: "videos/travel-jamaica.mp4", photo: null },
     { location: "Family adventure thru Comuna 13, Colombia", caption: "A clip from Comuna 13, Colombia.", video: "videos/travel-colombia.mp4", photo: null },
-    { location: "Location Pending", caption: "Photo and story pending.", photo: null },
+    { location: "Feeding Giraffes", caption: "A clip from feeding giraffes on the road.", video: "videos/travel-giraffes.mp4", photo: null },
     { location: "Location Pending", caption: "Photo and story pending.", photo: null },
     { location: "Location Pending", caption: "Photo and story pending.", photo: null }
   ]
