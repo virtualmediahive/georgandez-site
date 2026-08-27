@@ -15,7 +15,103 @@ document.addEventListener("DOMContentLoaded", function () {
   initScrollRail();
   initNewsletterForm();
   initImageFallbacks();
+  initCountdown();
+  initWaitlistModal();
 });
+
+function initCountdown() {
+  const root = document.getElementById("waitlist-countdown");
+  if (!root) return;
+  const target = new Date(root.getAttribute("data-target")).getTime();
+  const days = root.querySelector('[data-unit="days"]');
+  const hours = root.querySelector('[data-unit="hours"]');
+  const minutes = root.querySelector('[data-unit="minutes"]');
+  const seconds = root.querySelector('[data-unit="seconds"]');
+  const pad = (n) => String(n).padStart(2, "0");
+
+  const tick = () => {
+    const diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    days.textContent = pad(d);
+    hours.textContent = pad(h);
+    minutes.textContent = pad(m);
+    seconds.textContent = pad(s);
+    if (diff <= 0) clearInterval(timer);
+  };
+  tick();
+  const timer = setInterval(tick, 1000);
+}
+
+function initWaitlistModal() {
+  const overlay = document.getElementById("waitlist-modal");
+  if (!overlay) return;
+  const openers = document.querySelectorAll("[data-open-waitlist-modal]");
+  const closeBtn = overlay.querySelector(".modal-close");
+  const form = overlay.querySelector("#waitlist-form");
+  let lastTrigger = null;
+  const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const open = (triggerEl) => {
+    lastTrigger = triggerEl || document.activeElement;
+    overlay.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    trackEvent("waitlist_form_started");
+    overlay.querySelector("#waitlist-first-name")?.focus();
+  };
+  const close = () => {
+    overlay.classList.remove("is-open");
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  };
+
+  openers.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      open(btn);
+    });
+  });
+  closeBtn && closeBtn.addEventListener("click", close);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  document.addEventListener("keydown", (e) => {
+    if (!overlay.classList.contains("is-open")) return;
+    if (e.key === "Escape") { close(); return; }
+    if (e.key === "Tab") {
+      const focusable = Array.from(overlay.querySelectorAll(focusableSelector));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      /* Integration layer: wire this to ConvertKit / ActiveCampaign / Kit / Mailchimp /
+         GoHighLevel by POSTing `data` to SITE_CONFIG.WAITLIST_ENDPOINT. Left unimplemented
+         until real credentials/endpoint are supplied. */
+      if (window.SITE_CONFIG && window.SITE_CONFIG.WAITLIST_ENDPOINT) {
+        fetch(window.SITE_CONFIG.WAITLIST_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        }).catch(() => {});
+      } else {
+        console.log("[waitlist form placeholder] would submit:", data);
+      }
+
+      trackEvent("waitlist_form_submitted");
+      form.setAttribute("aria-live", "polite");
+      form.innerHTML = '<p style="font-weight:700; font-size:1.1rem;">You\'re on the waitlist!</p><p class="form-note" style="margin-top:0.4rem;">We\'ll email you the moment enrollment opens.</p>';
+    });
+  }
+}
 
 function renderTrustLogos() {
   const root = document.getElementById("trust-logos");

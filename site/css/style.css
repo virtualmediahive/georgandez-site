@@ -602,6 +602,47 @@ img[data-broken] { display: none; }
   color: var(--cream);
   padding: var(--space-xl) 0;
 }
+
+/* ===== Waitlist / Countdown ===== */
+.waitlist-section {
+  background: var(--forest-dark);
+  color: var(--cream);
+  padding: clamp(2.6rem, 5vw, 3.6rem) 0;
+}
+.waitlist-inner {
+  max-width: 640px;
+  margin-inline: auto;
+  text-align: center;
+}
+.waitlist-inner .section-sub { margin-inline: auto; }
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.8rem, 3vw, 1.8rem);
+  margin: 1.8rem 0 2rem;
+}
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+}
+.countdown-unit .value {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 600;
+  color: var(--sand);
+  line-height: 1;
+}
+.countdown-unit .label {
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(247, 241, 233, 0.65);
+}
 .story-grid { display: grid; gap: 3rem; }
 @media (min-width: 960px) { .story-grid { grid-template-columns: 0.9fr 1.1fr; align-items: center; gap: 4.5rem; } }
 .story-media {

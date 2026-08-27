@@ -33,6 +33,7 @@
     <a href="index.html" class="brand">GEORGANDEZ</a>
     <nav class="nav-links" aria-label="Primary">
       <a href="index.html">Home</a>
+      <a href="community.html">Community</a>
       <a href="about.html">About</a>
       <a href="start-here.html">Start Here</a>
       <a href="courses.html">Courses</a>
@@ -48,6 +49,7 @@
 
 <div class="mobile-menu">
   <a href="index.html">Home</a>
+  <a href="community.html">Community</a>
   <a href="about.html">About</a>
   <a href="start-here.html">Start Here</a>
   <a href="courses.html">Courses</a>
@@ -70,6 +72,23 @@
           <span class="play-circle">&#9654;</span> Watch My Story
         </a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="waitlist-section" id="waitlist">
+  <div class="container">
+    <div class="waitlist-inner reveal">
+      <span class="eyebrow">Coming Soon</span>
+      <h2 class="section-heading" style="color:var(--cream);">The AI for Virtual Assistance Academy</h2>
+      <p class="section-sub section-sub--dark">Launching October 25, 2026. Join the waitlist for early access and founding-member pricing.</p>
+      <div class="countdown" id="waitlist-countdown" data-target="2026-10-25T00:00:00">
+        <div class="countdown-unit"><span class="value" data-unit="days">00</span><span class="label">Days</span></div>
+        <div class="countdown-unit"><span class="value" data-unit="hours">00</span><span class="label">Hours</span></div>
+        <div class="countdown-unit"><span class="value" data-unit="minutes">00</span><span class="label">Minutes</span></div>
+        <div class="countdown-unit"><span class="value" data-unit="seconds">00</span><span class="label">Seconds</span></div>
+      </div>
+      <a href="#" class="btn btn--primary" data-open-waitlist-modal onclick="trackEvent('waitlist_cta_click')">Join the Waitlist</a>
     </div>
   </div>
 </section>
@@ -313,6 +332,29 @@
         </div>
       </div>
       <button type="submit" class="btn btn--primary btn--block" style="margin-top:1.4rem;">Send Me the Guide</button>
+      <p class="form-note">By submitting, you'll join the email list and receive occasional updates. Unsubscribe anytime.</p>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="waitlist-modal">
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="waitlist-modal-title">
+    <button class="modal-close" aria-label="Close">&times;</button>
+    <span class="eyebrow">Coming Soon</span>
+    <h3 id="waitlist-modal-title" style="font-family:var(--font-serif); font-size:1.6rem; margin-top:0.4rem;">Join the Waitlist</h3>
+    <p class="section-sub" style="font-size:0.92rem;">Be first to know when the AI for Virtual Assistance Academy opens on October 25.</p>
+    <form id="waitlist-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="waitlist-first-name">First Name</label>
+          <input id="waitlist-first-name" name="firstName" type="text" required>
+        </div>
+        <div class="form-field">
+          <label for="waitlist-email">Email</label>
+          <input id="waitlist-email" name="email" type="email" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block" style="margin-top:1.4rem;">Join the Waitlist</button>
       <p class="form-note">By submitting, you'll join the email list and receive occasional updates. Unsubscribe anytime.</p>
     </form>
   </div>

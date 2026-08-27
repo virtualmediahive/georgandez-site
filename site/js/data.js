@@ -116,6 +116,7 @@ window.SITE_DATA = {
      section id in index.html. `sub` is the short line shown under the section name. */
   scrollNav: [
     { id: "hero", label: "Home", sub: "Start Here" },
+    { id: "waitlist", label: "Waitlist", sub: "Launching Oct 25" },
     { id: "help-you", label: "I Help You", sub: "Build Your Business" },
     { id: "services", label: "How I Help", sub: "Guide · Courses · Coaching" },
     { id: "story", label: "My Story", sub: "Jamaica to $12K/Month" },
