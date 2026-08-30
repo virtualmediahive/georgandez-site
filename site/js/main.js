@@ -17,7 +17,21 @@ document.addEventListener("DOMContentLoaded", function () {
   initImageFallbacks();
   initCountdown();
   initWaitlistModal();
+  initStorySlideshow();
 });
+
+function initStorySlideshow() {
+  const root = document.getElementById("story-slideshow");
+  if (!root) return;
+  const slides = root.querySelectorAll(".story-slide");
+  if (slides.length < 2) return;
+  let index = 0;
+  setInterval(() => {
+    slides[index].classList.remove("is-active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("is-active");
+  }, 3000);
+}
 
 function initCountdown() {
   const root = document.getElementById("waitlist-countdown");
